@@ -15,13 +15,13 @@
 | BleMouse    | :soon: Coming soon           |
 | UsbMouse    | :white_check_mark: Available |
 
-SDK 说明请参阅**[此处](uMouse/ReadMe.md)**，下面分别提供对应系统的 SDK 包：
+SDK 说明请参阅[**此处**](uMouse/ReadMe.md)，下面分别提供对应系统的 SDK 包：
 
-1. **Windows**：仅支持 **Windows 10** 或以上** 64 位**操作系统，**[下载](uMouse/Win10-x64.zip)**
+1. **Windows**：仅支持 **Windows 10** 或以上 **64 位**操作系统，[**下载**](uMouse/Win10-x64.zip)
 2. **Linux**：目前只支持如下 **Debian** 桌面系统
   - **中科方德 V5.0 Pro**：
-  - **Uos V20**：包括 x64 CPU 的 **[amd64-sdk](uMouse/UosV20-x64.zip)** 和 arm64 CPU 的 **[amd64-sdk]()**
-  - **银河麒麟 V10 SP1**：包括 x64 CPU 的 **[amd64-sdk](uMouse/YinheKylinV10SP1-x64.zip)** 和 arm64 CPU 的 **[amd64-sdk](uMouse/YinheKylinV10SP1-arm64.zip)**
+  - **Uos V20**：包括 x64 CPU 的 [**amd64-sdk**](uMouse/UosV20-x64.zip) 和 arm64 CPU 的 [**amd64-sdk**]()
+  - **银河麒麟 V10 SP1**：包括 x64 CPU 的 [**amd64-sdk**](uMouse/YinheKylinV10SP1-x64.zip) 和 arm64 CPU 的 [**amd64-sdk**](uMouse/YinheKylinV10SP1-arm64.zip)
 3. **Mac**：当前**不支持**
 
 ### 开源许可
