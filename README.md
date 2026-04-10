@@ -7,23 +7,22 @@
 - 适配企业礼品、教育、采访等多类场景
 
 
-## 智能鼠标上位机SDK跨平台中间件简介
+## 智能鼠标 SDK
 
-1. **MouseCommon**：该组件提供智能鼠标和上位机双向通讯的接口，无需额外协议，主要涵盖：
+| Module      | Status                       |
+|-------------|------------------------------|
+| MouseCommon | :white_check_mark: Available |
+| BleMouse    | :soon: Coming soon           |
+| UsbMouse    | :white_check_mark: Available |
 
-  - 鼠标连接状态通知与序列号上报：上位机**必须**编写上报序列号的**登录鉴权**处理
-  - 按键监听和响应：这部分接口全部以 **RegisterXxxCallback** 的形式提供，作用是直接回调上位机功能
-  - 音频数据处理：包含启动和终止音频数据传递线程，以及音频解码数据的回调
-  - 跨平台操作系统处理：涵盖不同操作系统的初始化，和程序退出前的释放，以及模拟打字接口
-  - 特定操作系统独有拓展：
-    - **Linux**：主要是**无焦点语音识别文字回显窗口**的创建、销毁、显示、隐藏、更新文字等功能接口
-    - **Windows**：未来可能会考虑提供划词等独有功能，也有可能会把划词做成通用功能
-    - **Mac**：时间关系，目前没考虑
+SDK 说明请参阅**[此处](uMouse/ReadMe.md)**，下面分别提供对应系统的 SDK 包：
 
-2. 硬件相关的上位机模块：这些模块，均依赖于 **MouseCommon**，且专注于和智能鼠标通讯
-
-  - **BleMouse**：提供**低功耗蓝牙**相关的音频数据处理和按键主动设置处理
-  - **UsbMouse**：提供 **USB** 相关的音频数据处理和按键主动设置处理
+1. **Windows**：仅支持 **Windows 10** 或以上** 64 位**操作系统，**[下载](uMouse/Win10-x64.zip)**
+2. **Linux**：目前只支持如下 **Debian** 桌面系统
+  - **中科方德 V5.0 Pro**：
+  - **Uos V20**：包括 x64 CPU 的 **[amd64-sdk](uMouse/UosV20-x64.zip)** 和 arm64 CPU 的 **[amd64-sdk]()**
+  - **银河麒麟 V10 SP1**：包括 x64 CPU 的 **[amd64-sdk](uMouse/YinheKylinV10SP1-x64.zip)** 和 arm64 CPU 的 **[amd64-sdk](uMouse/YinheKylinV10SP1-arm64.zip)**
+3. **Mac**：当前**不支持**
 
 ### 开源许可
 
