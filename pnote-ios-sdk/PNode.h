@@ -89,7 +89,11 @@
 ///停止传输录音文件
 -(void)stopGetFile:(NSString *)fileName;
 
-//
+///删除录音文件
+-(void)delFileData:(NSString *)fileName;
+
+///删除全部录音文件
+-(void)delAllFileData;
 
 ///发送app当前状态 1 app进入前台  2 app进入后台
 -(void)sendAppShowState:(int)state;
