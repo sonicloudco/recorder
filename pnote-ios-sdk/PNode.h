@@ -127,4 +127,38 @@
 
 //获取版本号
 -(void)getDeviceVersion;
+
+//获取版本Code
+-(void)getDeviceVersionCode;
+
+//请求进入升级模式
+-(void)requestDeviceGotoOtaMode;
+
+//发送文件数据
+-(void)sendOtaFile:(NSData *)data;
+
+///打开WiFi
+-(void)openWiFi;
+
+///关闭WiFi
+-(void)closeWiFi;
+
+///获取设备热点连接状态，是否有手机连接上设备WiFi热点
+-(void)getWiFiHotspotState;
+
+///连接设备WiFi
+-(void)connectDeviceWiFi;
+
+///断开设备WiFi连接
+-(void)disconnectDeviceWiFi;
+
+///获取app与设备TCP/IP连接状态
+-(void)getDeviceWiFiState;
+
+/// 获取当前设备是否低功耗录音模式
+-(void)getDeviceLowPowerRecordMode;
+
+/// 设置当前设备低功耗录音模式
+-(void)setDeviceLowPowerRecordMode:(int)state;
+
 @end
