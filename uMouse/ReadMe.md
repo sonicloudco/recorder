@@ -75,23 +75,25 @@ void AppEnd()
 
 ### 事件码
 
-| Event code | Description                                | Customizable            |
-|------------|--------------------------------------------|-------------------------|
-| 1          | Speech recognition (In progress)           | :warning: Limited       |
-| 2          | Speech translation (In progress)           | :warning: Limited       |
-| 3          | Speech searching by M key (In progress)    | :warning: Limited       |
-| 4          | Speech command by AI key (In progress)     | :warning: Limited       |
-| 5          | Clicked M key as a Backspace key           | :white_check_mark: Yes  |
-| 6          | Clicked M key as an Enter key              | :white_check_mark: Yes  |
-| 7          | Clicked M key to open a predefined link    | :white_check_mark: Yes  |
-| 8 & 9      | Currently reserved                         | :warning: Limited       |
-| 10         | User stops speaking                        | :x: No                  |
-| 11         | Request speech recognition for all content | :warning: Limited       |
-| 12         | Request speech translation for all content | :warning: Limited       |
-| 13         | Request speech searching for all content   | :warning: Limited       |
-| 14         | Request speech executing for all content   | :warning: Limited       |
-| 15 ~ 20    | Currently reserved                         | :warning: Limited       |
-| > 20       | Clicked M key once for customized function | :white_check_mark: Free |
+| Event code | Description                                |
+|------------|--------------------------------------------|
+| 1          | Speech recognition (In progress)           |
+| 2          | Speech translation (In progress)           |
+| 3          | Speech searching by M key (In progress)    |
+| 4          | Speech command by AI key (In progress)     |
+| 5          | Clicked M key as a Backspace key           |
+| 6          | Clicked M key as an Enter key              |
+| 7          | Clicked M key to open a predefined link    |
+| 8 & 9      | Currently reserved                         |
+| 10         | User stops speaking                        |
+| 11         | Request speech recognition for all content |
+| 12         | Request speech translation for all content |
+| 13         | Request speech searching for all content   |
+| 14         | Request speech executing for all content   |
+| 15 ~ 20    | Currently reserved                         |
+| > 20       | Clicked M key once for customized function |
+
+对于**大于 20** 的事件码，只能是**普通按键触发，不含语音数据**，用户定义自己的 SDK 功能等参考此表
 
 ### 鼠标按键功能及其定制
 
@@ -136,13 +138,8 @@ void AppEnd()
 
 1. **MouseCommon**：该组件提供智能鼠标和上位机双向通讯的接口，无需额外协议，主要涵盖：
   - 鼠标连接状态通知与序列号上报：上位机**必须**编写上报序列号的**登录鉴权**处理
-  - 按键监听和响应：这部分接口全部以 **RegisterXxxCallback** 的形式提供，作用是直接回调上位机功能
+  - 按键监听和响应：这部分接口作用是直接通知回调上位机对应函数，告知对应按键、事件码变化
   - 音频数据处理：包含启动和终止音频数据传递线程，以及音频解码数据的回调
-  - 跨平台操作系统处理：涵盖不同操作系统的初始化，和程序退出前的释放，以及模拟打字接口
-  - 特定操作系统独有拓展：
-    - **Windows**：模拟用户打字功能
-    - **Linux**：模拟用户打字功能
-    - **Mac**：时间关系，目前没考虑
 2. 硬件相关的上位机模块：这些模块，均依赖于 **MouseCommon**，且专注于和智能鼠标通讯
   - **BleMouse**：提供**低功耗蓝牙**相关的音频数据处理和按键主动设置处理
   - **UsbMouse**：提供 **USB** 相关的音频数据处理和按键主动设置处理
@@ -151,8 +148,6 @@ void AppEnd()
   - **Linux**：只支持 **Debian 10** 或以上的桌面系统，请确保存在如下依赖项（**依赖项都在 -y 后面**）：
     ```bash
     sudo apt install -y libhidapi-libusb0 libusb-1.0-0 libusb-0.1-4
-    # 请确保 Linux 系统包含如下模块，如果没有则需要安装
-    sudo apt install -y libx11-6 libxft2 libxtst6 libxkbfile1 libxkbcommon0 libfontconfig1 libxext6 libxfixes3
     # [UOS V20 | 银河麒麟 V10 SP1] 系统专属模块，如果没有则需要安装
     sudo apt intstall -y libavcodec58
     # [中科方德 V5.0 pro] 系统专属模块，如果没有则需要安装
@@ -164,7 +159,7 @@ void AppEnd()
 
 1. 鼠标连接状态通知与序列号上报：
   ```cpp
-  /*!
+    /*!
    *  @brief      智能鼠标成功连接后的通知回调（不代表序列号已经上报）
    *  @details    [可选]上位机可自行编写弹窗提示，如“设备已连接”、“鼠标已连接”
    *
@@ -188,26 +183,6 @@ void AppEnd()
    *  @param[out] deviceType，表示具体连接的硬件类型，如"usb"或"ble"
    */
   typedef void (*UploadSnCallback)(const char* sn, int batteryLevel, const char* deviceType);
-
-  /*!
-   *  @brief      上位机注册智能鼠标已连接的通知回调
-   *
-   *  @param[in]  callback，智能鼠标已连接的处理函数
-   */
-  LIB_COMMON_EXPORT void RegisterConnectedCallback(ConnectedCallback callback);
-  /*!
-   *  @brief      上位机注册智能鼠标已断开的通知回调
-   *
-   *  @param[in]  callback，智能鼠标已断开的处理函数
-   */
-  LIB_COMMON_EXPORT void RegisterDisconnectedCallback(DisconnectedCallback callback);
-  /*!
-   *  @brief      上位机注册上报智能鼠标序列号的通知回调
-   *  @warning    [必选]上位机必须编写登录鉴权步骤
-   *
-   *  @param[in]  callback，上报序列号的处理函数
-   */
-  LIB_COMMON_EXPORT void RegisterUploadSnCallback(UploadSnCallback callback);
   ```
 2. 按键监听和响应：
   ```cpp
@@ -244,41 +219,9 @@ void AppEnd()
   typedef void (*MKeyHeldCallback)(int indexMKey);
 
   /*!
-   *  @brief      上位机注册智能鼠标通过按键改变 DPI 的通知回调
-   *
-   *  @param[in]  callback，DPI 改变后的处理函数
-   */
-  LIB_COMMON_EXPORT void RegisterDpiChangedCallback(DpiChangedCallback callback);
-
-  /*!
-   *  @brief      上位机注册智能鼠标语音键长按按下的通知回调
-   *
-   *  @param[in]  callback，语音键长按按下的处理函数
-   */
-  LIB_COMMON_EXPORT void RegisterSpeechKeyDownCallback(SpeechKeyDownCallback callback);
-  /*!
-   *  @brief      上位机注册智能鼠标语音键从长按中松开的通知回调
-   *
-   *  @param[in]  callback，语音键从长按中松开的处理函数
-   */
-  LIB_COMMON_EXPORT void RegisterSpeechKeyUpCallback(SpeechKeyUpCallback callback);
-  /*!
-   *  @brief      上位机注册智能鼠标 AI 键单击一次的通知回调
-   *
-   *  @param[in]  callback，AI 键单击一次的处理函数
-   */
-  LIB_COMMON_EXPORT void RegisterAIKeyClickedCallback(AIKeyClickedCallback callback);
-  /*!
-   *  @brief      上位机注册智能鼠标 M 键按住不放时，每次定时触发的通知回调
-   *
-   *  @param[in]  callback，M 键按住不放时，每次定时触发的处理函数
-   */
-  LIB_COMMON_EXPORT void RegisterMKeyHeldCallback(MKeyHeldCallback callback);
-
-  /*!
    *  @brief      通过事件码设置 M 键用途
    *  @details    比如语音打字、翻译，模拟用户按下后退、回车键等
-   *  @warning    indexMKey 为 0 时，特指设置的是语音键，N 表示设置第 N 个 M 键
+   *  @warning    indexMKey 为 0 时，特指设置的是语音键
    *
    *  @param[in]  eventCode，事件码表示用途，请参考 Common Events 事件码
    *  @param[in]  indexMKey，表示对第几个 M 键做设置，普通鼠标只有 1 个 M 键
@@ -294,22 +237,16 @@ void AppEnd()
   typedef struct AudioData
   {
       int _eventCode;             //!< 音频用途类型，参考 Common Events 事件码
-      unsigned char* _pData;      //!< 音频二进制数据（可以是编码前后的数据）
+      unsigned char* _pData;      //!< 音频二进制数据（是编码后的数据）
       int _length;                //!< 音频二进制数据有效长度
   }AudioData;
 
   /*!
    *  @brief      音频数据解码完毕后的通知回调
-   *  @details    [可选]上位机可自行编写音频数据用于语音识别的处理
+   *  @details    [必选]上位机可自行编写音频数据用于语音识别的处理
    */
   typedef void (*AudioDataDecodedCallback)(const AudioData* pAudioData);
 
-  /*!
-   *  @brief      上位机注册智能鼠标音频数据解码完毕后的通知回调
-   *
-   *  @param[in]  callback，音频数据解码完毕后的处理函数
-   */
-  LIB_COMMON_EXPORT void RegisterAudioDataDecodedCallback(AudioDataDecodedCallback callback);
   /*!
    *  @brief      启动音频解码线程
    */
@@ -319,84 +256,48 @@ void AppEnd()
    */
   LIB_COMMON_EXPORT void StopAudioDecodedThread();
   ```
-4. 跨平台操作系统处理：
+4. 通知回调批量注册：
   ```cpp
   /*!
-   *  @brief      操作系统相关功能使用前的平台初始化调用
-   *  @details    比如 Windows 注册热键，Linux 模拟键盘打字
+   *  @brief      内部通知回调
+   *  @details    仅暴露给上位机硬件相关模块调用
    */
-  LIB_COMMON_EXPORT void InitPlatform();
-  /*!
-   *  @brief      操作系统相关功能使用完成后的平台释放调用
-   */
-  LIB_COMMON_EXPORT void UninitPlatform();
+  typedef struct IInternalCallbacks
+  {
+      ConnectedCallback _onConnected;
+      DisconnectedCallback _onDisconnected;
+      MeetingDestroyedCallback _onMeetingDestroyed;
+  }IInternalCallbacks;
 
   /*!
-   *  @brief      模拟用户按下回车键
+   *  @brief      私有通知回调
+   *  @details    仅供本模块内部使用
    */
-  LIB_COMMON_EXPORT void SendReturn();
+  typedef struct IPrivateCallbacks
+  {
+      UploadSnCallback _onUploadSn;
+      DpiChangedCallback _onDpiChanged;
+      SpeechKeyDownCallback _onSpeechKeyDown;
+      SpeechKeyUpCallback _onSpeechKeyUp;
+      AIKeyClickedCallback _onAIKeyClicked;
+      MKeyHeldCallback _onMKeyHeld;
+      AudioDataDecodedCallback _onAudioDataDecoded;
+      MeetingCreatedCallback _onMeetingCreated;
+  }IPrivateCallbacks;
+
   /*!
-   *  @brief      模拟用户按下后退键
+   *  @brief      内部通知回调注册
    *
-   *  @param[in]  count，表示连续按下后退键的次数
+   *  @param[in]  callbacks，内部通知回调
    */
-  LIB_COMMON_EXPORT void SendBackspace(int count);
+  LIB_COMMON_EXPORT void RegisterInternalCallbacks(IInternalCallbacks callbacks);
   /*!
-   *  @brief      发送常用键盘热键命令，比如 Ctrl + v
-   *  @param[in]  letter，字母按键，从 'a' 到 'z'
-   *  @warning    注意 Mac 上的是 Command 按键，不是 Ctrl 按键
+   *  @brief      私有通知回调注册
+   *
+   *  @param[in]  callbacks，私有通知回调
    */
-  LIB_COMMON_EXPORT void SendCtrlCommand(char letter);
+  LIB_COMMON_EXPORT void RegisterPrivateCallbacks(IPrivateCallbacks callbacks);
   ```
-5. 特定操作系统独有拓展：
-  - Windows 系统：
-    - 模拟用户打字
-      ```cpp
-      /*!
-       *  @brief      模拟用户键盘打字，在光标后追加打字的内容
-       *  @param[in]  text，Unicode 编码的文字内容
-       */
-      LIB_COMMON_EXPORT void SendText(const wchar_t* text);
-      /*!
-       *  @brief      模拟用户从后向前删除紧跟着光标前指定的文字内容
-       *  @param[in]  text，Unicode 编码的文字内容
-       */
-      LIB_COMMON_EXPORT void DeleteText(const wchar_t* text);
-      ```
-  - Linux 系统
-    - 模拟用户打字
-      ```cpp
-      /*!
-       *  @brief      模拟用户键盘打字，在光标后追加打字的内容
-       *  @param[in]  text，utf8 编码的文字内容
-       */
-      LIB_COMMON_EXPORT void SendText(const char* text);
-      /*!
-       *  @brief      模拟用户从后向前删除紧跟着光标前指定的文字内容
-       *  @param[in]  text，Unicode 编码的文字内容
-       */
-      LIB_COMMON_EXPORT void DeleteText(const char* text);
-      ```
-
-### BleMouse
-
-```cpp
-/*!
- *  @brief      启动上位机低功耗蓝牙检测线程
- */
-LIB_EXPORT void StartBleCheckThread();
-/*!
- *  @brief      停止上位机低功耗蓝牙检测线程
- */
-LIB_EXPORT void StopBleCheckThread();
-
-/*!
- *  @brief      通过低功耗蓝牙设置鼠标 DPI
- *
- *  @param[in]  dpiLevel，鼠标 DPI 挡位，需参考对应硬件手册
- */
-LIB_EXPORT bool SetBleMouseDpi(int dpiLevel);
-```
 
 ### UsbMouse
 
@@ -413,7 +314,37 @@ LIB_EXPORT void StopUsbCheckThread();
 /*!
  *  @brief      通过 USB 设置鼠标 DPI
  *
- *  @param[in]  dpiLevel，鼠标 DPI 挡位，需参考对应硬件手册
+ *  @param[in]  dpiLevel，鼠标 DPI 挡位，需参考对应
+ *  @return     true 则设置成功
  */
 LIB_EXPORT bool SetUsbMouseDpi(int dpiLevel);
+
+#pragma region Meeting status
+
+/*!
+ *  @brief      通过 USB 创建会议
+ *
+ *  @return     true 则创建成功
+ */
+LIB_EXPORT bool MeetingCreatedByUsbMouse();
+/*!
+ *  @brief      通过 USB 销毁会议
+ *
+ *  @return     true 则销毁成功
+ */
+LIB_EXPORT bool MeetingDestroyedByUsbMouse();
+/*!
+ *  @brief      通过 USB 暂停会议
+ *
+ *  @return     true 则暂停成功
+ */
+LIB_EXPORT bool MeetingPausedByUsbMouse();
+/*!
+ *  @brief      通过 USB 恢复会议
+ *
+ *  @return     true 则恢复成功
+ */
+LIB_EXPORT bool MeetingResumedByUsbMouse();
+
+#pragma endregion
 ```
