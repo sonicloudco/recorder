@@ -9,15 +9,7 @@
 
 ## 智能鼠标 SDK
 
-SDK 说明请参阅[**此处**](uMouse/ReadMe.md)
-
-### 模块说明
-
-| Module      | Status                       |
-|-------------|------------------------------|
-| MouseCommon | :white_check_mark: Available |
-| BleMouse    | :soon: Coming soon           |
-| UsbMouse    | :white_check_mark: Available |
+SDK 说明请参阅[**此处**](uMouse/第三方接入说明.md)
 
 ### 不同系统蓝牙的最低要求
 
@@ -25,7 +17,7 @@ SDK 说明请参阅[**此处**](uMouse/ReadMe.md)
 |---------------------|-------------|----------------|
 | Windows (x64 Only)  | HCI 11      | 10.0.19041.0   |
 | Linux (x64 & arm64) | HCI 11      | BlueZ 5.50     |
-| Mac (x64 & arm64)   | **None**    | **None**       |
+| Mac (x64 & arm64)   | --          | --     |
 
 **注意**：部分**银河麒麟**的蓝牙 HCI 版本是 10，导致即便 BlueZ 即便是 5.50 以上也**兼容性不良**
 
@@ -36,7 +28,8 @@ SDK 说明请参阅[**此处**](uMouse/ReadMe.md)
   - **中科方德 V5.0 Pro**：仅支持 x64 CPU 的 [**amd64-sdk**](uMouse/FangDe-x64.zip)
   - **Uos V20**：包括 x64 CPU 的 [**amd64-sdk**](uMouse/UosV20-x64.zip) 和 arm64 CPU 的 [**arm64-sdk**](uMouse/UosV20-arm64.zip)
   - **银河麒麟 V10 SP1**：包括 x64 CPU 的 [**amd64-sdk**](uMouse/YinheKylinV10SP1-x64.zip) 和 arm64 CPU 的 [**arm64-sdk**](uMouse/YinheKylinV10SP1-arm64.zip)
-3. **Mac**：当前**不支持**
+3. **Mac**：当前支持arm64版本。
+4. 有其他需求可以联系声云。
 
 ### 开源许可
 
