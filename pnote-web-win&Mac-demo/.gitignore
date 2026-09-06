@@ -1,0 +1,12 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# 下载的录音与转写结果（个人数据，不入库）
+downloads/
+
+# IDE
+.idea/
+.vscode/

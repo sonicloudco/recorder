@@ -1,0 +1,9 @@
+# 语音转文字（transcribe 命令）可选依赖，核心功能不依赖本文件
+#   pip install -r requirements-asr.txt
+# 首次运行 transcribe 时自动从 ModelScope 下载 SenseVoiceSmall 模型（约 900MB）
+funasr>=1.1.0
+modelscope
+torch>=2.0
+# 注意：torchaudio 大版本必须与 torch 配对（如 torch 2.9.x ↔ torchaudio 2.9.x），
+# 否则 _torchaudio.pyd 加载报 WinError 127；已装 torch 时请指定同号版本
+torchaudio

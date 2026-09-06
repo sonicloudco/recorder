@@ -1,0 +1,4 @@
+# Web 界面（python main.py --web）可选依赖，核心 CLI 功能不依赖本文件
+#   pip install -r requirements-web.txt
+fastapi>=0.110
+uvicorn>=0.29

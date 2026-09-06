@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI录音卡测试平台</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">声云 录音卡 BLE Protocol Tester</p>
+        <h1>AI录音卡测试平台</h1>
+      </div>
+      <div class="connection">
+        <a class="nav-link" href="./manual/">参数说明</a>
+        <span id="secureState" class="pill">检测环境</span>
+        <span id="bleState" class="pill">未连接</span>
+        <button id="connectBtn" class="primary">连接设备</button>
+        <button id="compatConnectBtn">兼容扫描</button>
+        <button id="disconnectBtn" disabled>断开</button>
+      </div>
+    </header>
+
+    <main class="shell">
+      <section class="panel status-panel">
+        <div class="section-head">
+          <div>
+            <h2>设备状态</h2>
+            <p>AE20 服务，AE21 写入，AE22/AE23 通知。</p>
+          </div>
+          <button id="safeSmokeBtn" disabled>读取项巡检</button>
+        </div>
+        <div class="metrics">
+          <div><span>电量</span><strong id="batteryText">--</strong></div>
+          <div><span>容量</span><strong id="capacityText">--</strong></div>
+          <div><span>固件</span><strong id="firmwareText">--</strong></div>
+          <div><span>录音状态</span><strong id="recordStateText">--</strong></div>
+          <div><span>录音时长</span><strong id="recordTimeText">--</strong></div>
+          <div><span>增益</span><strong id="gainText">--</strong></div>
+        </div>
+        <div class="toolbar">
+          <button data-cmd="syncTime" disabled>同步时间</button>
+          <button data-cmd="capacity" disabled>获取容量</button>
+          <button data-cmd="battery" disabled>获取电量</button>
+          <button data-cmd="firmware" disabled>固件版本</button>
+          <button data-cmd="auth" disabled>授权码</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="section-head">
+          <div>
+            <h2>文件列表与导入</h2>
+            <p>文件列表整数按 BE 解析；下载请求 2-2 始终整帧单写。</p>
+          </div>
+          <div class="toolbar tight">
+            <button data-cmd="list" disabled>读取列表</button>
+            <button id="abortImportBtn" disabled>终止导入</button>
+          </div>
+        </div>
+        <div class="download-line">
+          <label>
+            文件名
+            <input id="downloadName" placeholder="note20260710-162938.wav" />
+          </label>
+          <label>
+            Offset
+            <input id="downloadOffset" type="number" min="0" value="0" />
+          </label>
+          <button id="downloadBtn" disabled>导入文件</button>
+          <button id="segDownloadBtn" disabled>分段导入</button>
+        </div>
+        <div class="download-line">
+          <label>
+            Start
+            <input id="segStart" type="number" min="0" value="0" />
+          </label>
+          <label>
+            End
+            <input id="segEnd" type="number" min="0" value="0" />
+          </label>
+          <span id="downloadStatus" class="muted">未开始</span>
+        </div>
+        <div class="file-table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>文件名</th>
+                <th>时长/时间</th>
+                <th>大小</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody id="fileRows">
+              <tr><td colspan="5" class="empty">连接后读取文件列表</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="danger-zone">
+          <button id="deleteAllBtn" disabled>删除全部文件</button>
+          <label class="confirm">
+            <input id="allowDelete" type="checkbox" />
+            允许发送删除命令
+          </label>
+        </div>
+      </section>
+
+      <section class="grid-two">
+        <div class="panel">
+          <div class="section-head">
+            <div>
+              <h2>实时音频 / 转写</h2>
+              <p>保存设备推送的 OPUS 系码流原始备份。</p>
+            </div>
+          </div>
+          <div class="toolbar">
+            <button data-cmd="rtStart" disabled>开始实时</button>
+            <button data-cmd="rtPause" disabled>暂停</button>
+            <button data-cmd="rtResume" disabled>继续</button>
+            <button data-cmd="rtStop" disabled>结束实时</button>
+          </div>
+          <div class="metrics compact">
+            <div><span>实时文件</span><strong id="rtName">--</strong></div>
+            <div><span>接收字节</span><strong id="rtBytes">0 B</strong></div>
+          </div>
+          <button id="saveRealtimeBtn" disabled>保存实时音频原始数据</button>
+        </div>
+
+        <div class="panel">
+          <div class="section-head">
+            <div>
+              <h2>录音控制与增益</h2>
+              <p>TYPE=3 命令，可同时接收 AE23 机身事件。</p>
+            </div>
+          </div>
+          <div class="toolbar">
+            <button data-cmd="recStart" disabled>开始录音</button>
+            <button data-cmd="recSave" disabled>保存录音</button>
+            <button data-cmd="recPause" disabled>暂停录音</button>
+            <button data-cmd="recResume" disabled>继续录音</button>
+          </div>
+          <div class="toolbar">
+            <button data-cmd="recState" disabled>录音状态</button>
+            <button data-cmd="recTime" disabled>录音时间</button>
+            <button data-cmd="recName" disabled>当前文件名</button>
+            <button data-cmd="getGain" disabled>读取增益</button>
+          </div>
+          <div class="download-line">
+            <label>
+              设置增益
+              <select id="gainSelect">
+                <option value="1">低</option>
+                <option value="2" selected>中</option>
+                <option value="3">高</option>
+              </select>
+            </label>
+            <button id="setGainBtn" disabled>发送</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid-two">
+        <div class="panel">
+          <div class="section-head">
+            <div>
+              <h2>原始命令</h2>
+              <p>用于补充验证厂商新增命令或抓包复现。</p>
+            </div>
+          </div>
+          <div class="raw-grid">
+            <label>TYPE <input id="rawType" type="number" min="0" max="255" value="0" /></label>
+            <label>CMD <input id="rawCmd" type="number" min="0" max="255" value="3" /></label>
+            <label class="wide">PARAMS HEX <input id="rawParams" placeholder="01 02 03" /></label>
+          </div>
+          <button id="sendRawCmdBtn" disabled>按协议封包发送</button>
+          <label class="raw-frame">
+            完整帧 HEX
+            <textarea id="rawFrame" rows="3" placeholder="5a 00 ..."></textarea>
+          </label>
+          <button id="sendRawFrameBtn" disabled>直接发送完整帧</button>
+        </div>
+
+        <div class="panel">
+          <div class="section-head">
+            <div>
+              <h2>协议自检</h2>
+              <p>本地校验 CRC、示例帧和解析器，不需要连接设备。</p>
+            </div>
+          </div>
+          <button id="selfTestBtn">运行自检</button>
+          <pre id="selfTestOutput" class="test-output">等待运行</pre>
+        </div>
+      </section>
+
+      <section class="panel log-panel">
+        <div class="section-head">
+          <div>
+            <h2>通信日志</h2>
+            <p>TX/RX 原始帧、解析结果、CRC 错误和超时。</p>
+          </div>
+          <div class="toolbar tight">
+            <button id="clearLogBtn">清空</button>
+            <button id="exportLogBtn">导出日志</button>
+          </div>
+        </div>
+        <pre id="log"></pre>
+      </section>
+    </main>
+
+    <template id="downloadTemplate">
+      <div class="download-result">
+        <a id="downloadLink"></a>
+        <audio id="audioPreview" controls hidden></audio>
+      </div>
+    </template>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
