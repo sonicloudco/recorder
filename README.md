@@ -81,6 +81,12 @@ python -m unittest discover tests -v
 
 首次转写会从 ModelScope 下载约 900 MB 模型，之后可离线运行。
 
+### pnote-web-win&Mac-demo
+
+桌面 Demo 位于 [`pnote-web-win&Mac-demo`](pnote-web-win%26Mac-demo/)，同时提供命令行 REPL 和浏览器 Web 控制台，可完成设备扫描、连接巡检、录音控制、文件下载、WAV 试听、实时推流和离线转写。
+
+![录音卡 BLE 控制台](pnote-web-win%26Mac-demo/%E5%BD%95%E9%9F%B3%E5%8D%A1%20ble%20%E6%8E%A7%E5%88%B6%E5%8F%B0.png)
+
 ## 移动端接入
 
 ### Flutter 联调工程
