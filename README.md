@@ -4,7 +4,7 @@
 
 声云录音卡 Recorder 是面向硬件厂商、软件开发者和行业集成商的开源示例项目。我们以 **录音卡片硬件** 为核心产品，同时开放录音卡 BLE 通讯协议 SDK、跨平台接入示例和桌面端 Demo，帮助团队从“连接设备”快速走到“录音、传输、转写和业务落地”。
 
-<img src="录音卡片.png" alt="声云录音卡片" width="480" style="max-width: 100%; height: auto;">
+<img src="img/录音卡片.png" alt="声云录音卡片" width="480" style="max-width: 100%; height: auto;">
 
 ## 项目定位
 
@@ -42,8 +42,11 @@ recorder/
 │   ├── web/                            # 前端页面
 │   ├── tests/                          # 协议与设备模拟测试
 │   └── docs/协议.md                    # CB08 通讯协议 V1.0
-├── 录音卡片.png                         # 产品图片
-├── 硬件参数.png                         # 硬件参数图
+├── img/                                  # 项目图片资源
+│   ├── 录音卡片.png                       # 产品图片
+│   ├── 硬件参数.png                       # 硬件参数图
+│   └── 企业微信.png                       # 联系二维码
+├── SDK 集成引导.docx                     # SDK 集成流程与平台接入引导
 ├── demo.mp4                            # 演示视频
 └── LICENSE                             # MIT License
 ```
@@ -88,6 +91,8 @@ python -m unittest discover tests -v
 ![录音卡 BLE 控制台](pnote-web-win%26Mac-demo/%E5%BD%95%E9%9F%B3%E5%8D%A1%20ble%20%E6%8E%A7%E5%88%B6%E5%8F%B0.png)
 
 ## 移动端接入
+
+开始接入前，请先阅读 [SDK 集成引导（Word）](SDK%20%E9%9B%86%E6%88%90%E5%BC%95%E5%AF%BC.docx)，了解 SDK 架构、接入流程、权限配置、设备连接、数据回调和常见问题；再根据目标平台查看下方的详细说明。
 
 ### Flutter 联调工程
 
@@ -146,7 +151,7 @@ PNote.connectDevice(name, address);
 
 本项目的商业模式是“硬件销售 + 开放 SDK + 项目服务”：录音卡片硬件用于量产和行业应用，BLE 协议 SDK 与 Demo 用于降低研发接入成本；批量采购、外观/固件定制、行业功能、云端转写和交付支持可按项目评估。
 
-<img src="企业微信.png" alt="企业微信" width="260" style="max-width: 100%; height: auto;">
+<img src="img/企业微信.png" alt="企业微信" width="200" style="max-width: 100%; height: auto;">
 
 如需获取硬件规格、样机、鸿蒙 SDK、协议完整版、企业微信二维码或技术支持资料，请联系 **安徽声云**（官网：[sinicloud.com](https://www.sinicloud.com/)）。咨询时请说明目标平台、预计数量和应用场景。
 
